@@ -1,6 +1,6 @@
-const pool = require('../config/db');
+import pool from '../config/db.js'; // .js extension zaroori hai
 
-const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
     const { page = 1, limit = 8, category = 'All', sort = 'default', search = '' } = req.query;
     const offset = (page - 1) * limit;
@@ -44,7 +44,6 @@ const getAllProducts = async (req, res) => {
 
     const [rows] = await pool.query(query, queryParams);
     
-    // Total Count for Frontend Pagination (Required for 1, 2, 3... buttons)
     const [countRows] = await pool.query('SELECT COUNT(*) as total FROM products');
     const totalProducts = countRows[0].total;
 
@@ -61,5 +60,3 @@ const getAllProducts = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
-
-module.exports = { getAllProducts };
